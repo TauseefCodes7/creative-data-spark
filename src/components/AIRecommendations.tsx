@@ -14,10 +14,22 @@ interface AIRecommendationsProps {
   data: any[];
 }
 
+interface MediumPerformanceStats {
+  engagement: number;
+  conversion: number;
+  sentiment: number;
+  count: number;
+}
+
+type BestMediumResult = {
+  medium: string;
+  rate: number;
+} | null;
+
 const AIRecommendations = ({ data }: AIRecommendationsProps) => {
   const generateRecommendations = () => {
     // Analyze medium performance
-    const mediumPerformance = data.reduce((acc: Record<string, any>, item) => {
+    const mediumPerformance = data.reduce((acc: Record<string, MediumPerformanceStats>, item) => {
       if (!acc[item.medium]) {
         acc[item.medium] = { 
           engagement: 0, 
@@ -37,13 +49,14 @@ const AIRecommendations = ({ data }: AIRecommendationsProps) => {
     const recommendations = [];
     
     // Best performing medium
-    const bestMedium = Object.entries(mediumPerformance).reduce((best, [medium, stats]: [string, any]) => {
-      const convRate = stats.conversion / stats.engagement;
+    const bestMedium: BestMediumResult = Object.entries(mediumPerformance).reduce((best, [medium, stats]) => {
+      const typedStats = stats as MediumPerformanceStats;
+      const convRate = typedStats.conversion / typedStats.engagement;
       if (!best || convRate > best.rate) {
         return { medium, rate: convRate };
       }
       return best;
-    }, null);
+    }, null as BestMediumResult);
 
     if (bestMedium) {
       recommendations.push({
