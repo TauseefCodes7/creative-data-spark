@@ -1,5 +1,4 @@
-
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
@@ -8,6 +7,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
+import AdvancedFilters from "./AdvancedFilters";
+import AIRecommendations from "./AIRecommendations";
 
 interface DataInsightsPanelProps {
   data: any[];
@@ -16,6 +17,8 @@ interface DataInsightsPanelProps {
 const COLORS = ['#8B5CF6', '#0EA5E9', '#D946EF', '#F97316', '#22C55E'];
 
 const DataInsightsPanel = ({ data }: DataInsightsPanelProps) => {
+  const [filteredData, setFilteredData] = useState(data);
+
   // Skip rendering if no data
   if (!data || data.length === 0) {
     return null;
@@ -187,6 +190,8 @@ const DataInsightsPanel = ({ data }: DataInsightsPanelProps) => {
 
   return (
     <div className="space-y-6">
+      <AdvancedFilters data={data} onFilterChange={setFilteredData} />
+      
       {/* Key Metrics */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
@@ -316,6 +321,9 @@ const DataInsightsPanel = ({ data }: DataInsightsPanelProps) => {
           </Tabs>
         </CardContent>
       </Card>
+      
+      {/* AI Recommendations */}
+      <AIRecommendations data={filteredData} />
       
       {/* Insights Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
