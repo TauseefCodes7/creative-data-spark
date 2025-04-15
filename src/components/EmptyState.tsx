@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Upload, BarChart2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

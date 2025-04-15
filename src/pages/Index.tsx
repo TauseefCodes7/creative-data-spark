@@ -75,7 +75,7 @@ const Index = () => {
           <Separator className="my-4" />
           
           <TabsContent value="upload" className="mt-0">
-            <DataUploader onDataUploaded={handleDataUploaded} />
+            <DataUploader onDataUploaded={handleDataUploaded} fileInputRef={fileInputRef} />
           </TabsContent>
           
           <TabsContent value="insights" className="mt-0">
