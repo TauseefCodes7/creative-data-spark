@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,11 +6,15 @@ import { toast } from "sonner";
 
 interface DataUploaderProps {
   onDataUploaded: (data: any[]) => void;
+  fileInputRef?: React.RefObject<HTMLInputElement>;
 }
 
-const DataUploader = ({ onDataUploaded }: DataUploaderProps) => {
+const DataUploader = ({ onDataUploaded, fileInputRef }: DataUploaderProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const internalFileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const inputRef = fileInputRef || internalFileInputRef;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,7 +60,6 @@ const DataUploader = ({ onDataUploaded }: DataUploaderProps) => {
       
       headers.forEach((header, index) => {
         let value = values[index]?.trim() || '';
-        // Try to convert numeric values
         if (!isNaN(Number(value)) && value !== '') {
           entry[header] = Number(value);
         } else {
@@ -75,7 +77,6 @@ const DataUploader = ({ onDataUploaded }: DataUploaderProps) => {
     setIsUploading(true);
     setFileName("demo-data.csv");
     
-    // Generate creative performance data
     const demoData = Array.from({ length: 50 }, (_, i) => {
       const month = (i % 12) + 1;
       const year = 2023 + Math.floor(i / 12);
@@ -121,6 +122,7 @@ const DataUploader = ({ onDataUploaded }: DataUploaderProps) => {
                 onChange={handleFileChange}
                 className="absolute inset-0 cursor-pointer opacity-0"
                 disabled={isUploading}
+                ref={inputRef}
               />
               <div className="flex flex-col items-center gap-2">
                 <Upload className="h-8 w-8 text-muted-foreground" />
