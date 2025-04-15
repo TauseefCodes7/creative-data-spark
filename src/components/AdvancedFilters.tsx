@@ -78,7 +78,7 @@ const AdvancedFilters = ({ data, onFilterChange }: AdvancedFiltersProps) => {
               <SelectValue placeholder="Select medium" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Mediums</SelectItem>
+              <SelectItem value="all-mediums">All Mediums</SelectItem>
               {uniqueMediaTypes.map((type) => (
                 <SelectItem key={type} value={type}>{type}</SelectItem>
               ))}
